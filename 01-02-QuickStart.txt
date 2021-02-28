@@ -1,0 +1,9 @@
+
+-----------------------------
+c := RSCanvas new.1 to: 100 do: [ :i |	c add: (RSLabel new model: i) ].RSLineBuilder line	shapes: c nodes;	connectFrom: [ :i | i // 2 ].	RSClusterLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+url := 'https://raw.githubusercontent.com/ObjectProfile/Roassal3Documentation/master/data/covidDataUntil23-September-2020.txt'.rawData := OpalCompiler evaluate: ((ZnEasy get: url) contents).countries := rawData collect: #first.allData := rawData collect: #allButFirst.color := NSScale category20.chart := RSChart new.chart extent: 400 @ 400.chart colors: color.allData do: [ :data | chart addPlot:(RSLinePlot new y: data) ].chart xlabel: 'Days ago' offset: 0 @ 20.chart ylabel: 'Contaminated' offset: -60 @ 0.chart title: 'Coronavirus confirmed cases'.chart addDecoration: (RSHorizontalTick new fontSize: 10).chart addDecoration: (RSVerticalTick new integerWithCommas; fontSize: 10).chart ySqrt.chart build.b := RSLegend new.b container: chart canvas.countries with: chart plots do: [ :c : p |	b text: c withBoxColor: (chart colorFor: p) ].b layout horizontal gapSize: 30.b build.b canvas open
+
+-----------------------------
+sb := RSSunburstBuilder new.sb sliceShape withBorder.sb sliceColor: [ :shape | shape model subclasses isEmpty 					ifTrue: [ Color purple ]					ifFalse: [ Color lightGray ] ].sb explore: Collection using: #subclasses.sb build.sb canvas @ RSCanvasController.RSLineBuilder sunburstBezier	width: 2;	color: Color black;	markerEnd: (RSEllipse new 		size: 10;		color: Color white;		withBorder;		yourself);	canvas: sb canvas;	connectFrom: #superclass.sb open
