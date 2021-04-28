@@ -1,0 +1,27 @@
+
+-----------------------------
+canvas := RSCanvas new.1 to: 10 do: [ :i |	g := RSGroup new. 	i timesRepeat: [ g add: RSCircle new ].	RSFlowLayout on: g.	canvas add: g asShape.].RSGridLayout new gapSize: 50; on: canvas shapes.canvas shapes @ RSDraggable @ RSHighlightable red.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 10 do: [ :i |	g := RSGroup new. 	i timesRepeat: [ g add: RSCircle new ].	RSFlowLayout on: g.	compositeShape := g asShape.	compositeShape borderColor: Color black.	compositeShape padding: 5.	canvas add: compositeShape.].RSGridLayout new gapSize: 50; on: canvas shapes.canvas shapes @ RSDraggable @ RSHighlightable red.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 10 do: [ :i |	g := RSGroup new. 	i timesRepeat: [ g add: RSCircle new ].	RSFlowLayout on: g.		title := RSLabel text: i.	RSVerticalLineLayout new alignCenter; on: { title . g }.	g add: title.		compositeShape := g asShape.	compositeShape borderColor: Color black.	compositeShape padding: 5.	canvas add: compositeShape.].RSGridLayout new gapSize: 50; on: canvas shapes.canvas shapes @ RSDraggable @ RSHighlightable red.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 100 by: 10 do: [ :i |	g := RSCircle models: (1 to: i) forEach: [ :s :nb | s color: Color random translucent ].		lb := RSLineBuilder line.	lb canvas: g.	lb shapes: g.	lb connectFrom: [ :nb | nb // 2 ].		RSRadialTreeLayout on: g nodes.		title := RSLabel new fontSize: 20; text: i.	RSVerticalLineLayout new alignCenter; on: { title . g }.	g add: title.		compositeShape := g asShape.	compositeShape borderColor: Color black.	compositeShape padding: 5.	canvas add: compositeShape.].RSGridLayout new gapSize: 50; on: canvas shapes.canvas shapes @ RSDraggable @ RSHighlightable red.canvas zoomToFit.canvas open
+
+-----------------------------
+c := RSCanvas new.compoShape := RSComposite model: 'Hello' forIt: [ :title :composite |	composite add: (RSLabel text: title).	composite add: (RSCircle new size: 20).	RSVerticalLineLayout new alignCenter; on: composite shapes.	composite @ RSDraggable ].c add: compoShape.c open 
+
+-----------------------------
+classes := ByteArray withAllSubclasses.c := RSCanvas new.boxes := RSComposite models: classes forEach: [ :cls :s |	s add: (RSLabel new text: cls name).	s add: (RSBox new size: cls numberOfLinesOfCode sqrt + 5).	RSVerticalLineLayout new alignCenter; on: s children.	s @ RSDraggable ].c addAll: boxes. lb := RSLineBuilder line.lb withVerticalAttachPoint.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := ByteArray withAllSubclasses.c := RSCanvas new.boxes := RSBox models: classes forEach: [ :s :cls |	s size: cls numberOfLinesOfCode sqrt + 5.	s @ RSDraggable ].c addAll: boxes. boxes @ RSLabeled.lb := RSLineBuilder line.lb withVerticalAttachPoint.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := ByteArray withAllSubclasses.c := RSCanvas new.boxes := RSBox models: classes forEach: [ :s :cls |	s size: cls numberOfLinesOfCode sqrt + 5.	s @ RSDraggable ].c addAll: boxes. boxes @ RSLabeled highlightable.lb := RSLineBuilder line.lb withVerticalAttachPoint.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 30 do: [ :aNumber |	labeledCircle := { RSCircle new size: 30 . RSLabel new color: Color black; text: aNumber } asGroup asShapeFor: aNumber.	canvas add: labeledCircle ].lb := RSLineBuilder line.lb withBorderAttachPoint.lb shapes: canvas nodes.lb connectFrom: [ :v | v // 2 ].RSTreeLayout on: canvas nodes.canvas @ RSCanvasController.canvas open

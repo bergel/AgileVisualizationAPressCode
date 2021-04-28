@@ -58,3 +58,63 @@ v := OrderedCollection new.v add: 23. v add: 42.v add: 51.
 
 -----------------------------
 v := OrderedCollection new.v 	add: 23; 	add: 42;	add: 51.
+
+-----------------------------
+c := RSCanvas new.c add: (RSLabel new fontSize: 30; text: 'Hello World').c openOnce
+
+-----------------------------
+c := RSCanvas new.#(20 40 35 42 10 25) do: [ :v | 	c add: (RSCircle new size: v; model: v).].RSHorizontalLineLayout on: c shapes.c shapes @ RSLabeled.c @ RSCanvasController.c openOnce
+
+-----------------------------
+'the quick brown fox jumped over the lazy dog' copyReplaceAll: 'fox' with: 'cat' 
+
+-----------------------------
+Object new == Object new
+
+-----------------------------
+tweets := Tweet createFromExample.tweetShapes := RSCircle models: tweets forEach: [ :aCircle :aTweet | aTweet isPositive ifTrue: [ aCircle color: Color green ]. aTweet isNegative ifTrue: [ aCircle color: Color red ] ].tweetShapes translucent.c := RSCanvas new.c addAll: tweetShapes.RSLineBuilder line	shapes: c nodes;	color: Color gray translucent;	withBorderAttachPoint; 	moveBehind;	noBidirectional;	connectToAll: [ :tweet | 			tweets select: [ :t | t isSimilarTo: tweet ] ].		c nodes @ RSPopup @ RSDraggable.RSNormalizer size	shapes: c nodes; from: 5; to: 15; normalize: [ :tweet | tweet content size ].RSConditionalLayout new ifNotConnectedThen: RSGridLayout new; else: RSForceBasedLayout new; on: c nodes.c @ RSCanvasController.
+
+-----------------------------
+b := [ :x :y | x + y ].b value: 40 value: 2 "return 42"
+
+-----------------------------
+v := OrderedCollection new.v add: 23. v add: 42.v add: 51.shapes := v collect: [ :nb | RSBox new size: nb ].RSVerticalLineLayout new alignCenter; on: shapes.RSCanvas new	addAll: shapes;	yourself
+
+-----------------------------
+d := Dictionary new.d at: #one put: 1.d at: #two put: 2.d at: #three put: 3.
+
+-----------------------------
+v := OrderedCollection new.v add: 23. v add: 42.v add: 51.
+
+-----------------------------
+v := OrderedCollection new.v 	add: 23; 	add: 42;	add: 51.
+
+-----------------------------
+c := RSCanvas new.c add: (RSLabel new fontSize: 30; text: 'Hello World').c openOnce
+
+-----------------------------
+c := RSCanvas new.#(20 40 35 42 10 25) do: [ :v | 	c add: (RSCircle new size: v; model: v).].RSHorizontalLineLayout on: c shapes.c shapes @ RSLabeled.c @ RSCanvasController.c openOnce
+
+-----------------------------
+'the quick brown fox jumped over the lazy dog' copyReplaceAll: 'fox' with: 'cat' 
+
+-----------------------------
+Object new == Object new
+
+-----------------------------
+tweets := Tweet createFromExample.tweetShapes := RSCircle models: tweets forEach: [ :aCircle :aTweet | aTweet isPositive ifTrue: [ aCircle color: Color green ]. aTweet isNegative ifTrue: [ aCircle color: Color red ] ].tweetShapes translucent.c := RSCanvas new.c addAll: tweetShapes.RSLineBuilder line	shapes: c nodes;	color: Color gray translucent;	withBorderAttachPoint; 	moveBehind;	noBidirectional;	connectToAll: [ :tweet | 			tweets select: [ :t | t isSimilarTo: tweet ] ].		c nodes @ RSPopup @ RSDraggable.RSNormalizer size	shapes: c nodes; from: 5; to: 15; normalize: [ :tweet | tweet content size ].RSConditionalLayout new ifNotConnectedThen: RSGridLayout new; else: RSForceBasedLayout new; on: c nodes.c @ RSCanvasController.
+
+-----------------------------
+b := [ :x :y | x + y ].b value: 40 value: 2 "return 42"
+
+-----------------------------
+v := OrderedCollection new.v add: 23. v add: 42.v add: 51.shapes := v collect: [ :nb | RSBox new size: nb ].RSVerticalLineLayout new alignCenter; on: shapes.RSCanvas new	addAll: shapes;	yourself
+
+-----------------------------
+d := Dictionary new.d at: #one put: 1.d at: #two put: 2.d at: #three put: 3.
+
+-----------------------------
+v := OrderedCollection new.v add: 23. v add: 42.v add: 51.
+
+-----------------------------
+v := OrderedCollection new.v 	add: 23; 	add: 42;	add: 51.

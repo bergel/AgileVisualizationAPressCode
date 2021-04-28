@@ -58,3 +58,63 @@ values := #(20 10 5 30 24 32).links := { 20 -> #(10) . 5 -> #(24 . 20) . 10 -> 
 
 -----------------------------
 c := RSCanvas new.r := Random seed: 42.100 timesRepeat: [ 	p := ((r nextInt: 500) - 250) @ ((r nextInt: 500) - 250).	shape := RSCircle new color: Color random translucent.	shape translateTo: p.		c add: shape.	c newAnimation		easing: RSEasing bounce;		from: p;		duration: ((r nextInt: 5) / 2) second;		to: p + (0 @ 100);		on: shape set: #position:;		when: RSAnimationEndEvent do: [ :evt | shape remove ].].	c
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).canvas := RSCanvas new.canvas add: box.canvas open
+
+-----------------------------
+RSCanvas new	add: (RSBox new size: 100; color: #blue);	openWithTitle: 'This is a blue box'
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).canvas := RSCanvas new.canvas color: (UITheme current backgroundColor).canvas add: box.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 1000 do: [ :i |	canvas add: (RSBox new size: 10).].RSGridLayout on: canvas shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.labelAdd := RSLabel text: 'Add shapes'.labelAdd @ RSHighlightable red.canvas add: labelAdd.labelAdd setAsFixed.labelAdd translateTopLeftTo: 0 @ 0.r := Random new.canvas when: RSMouseClick do: [ :evt | 	canvas shapes do: #remove. 	canvas signalUpdate ].labelAdd when: RSMouseClick do: [ :evt | 	100 timesRepeat: [ 		shape := RSBox new						size: (r nextInt: 50);						color: Color random translucent;						translateTo: (r nextInt: 500) @ (r nextInt: 500).		canvas add: shape ].	"refresh the window"		canvas signalUpdate.	"make sure everything fits on screen"	canvas zoomToFit ].canvas open
+
+-----------------------------
+canvas := RSCanvas new.someColors := { Color red . Color blue . Color green }.shapes := RSGroup new.someColors do: [ :aColor | 	shapes add: (RSEllipse new size: 30; model: aColor; color: aColor) ].canvas addAll: shapes.shapes @ RSDraggable.shapes @ RSLabeled highlightable.shapes @ (RSPopup text: [ :aColor | 'My color is ', aColor asString]).RSHorizontalLineLayout on: shapes.canvas @ RSCanvasController.canvas open.
+
+-----------------------------
+values := #(20 30 40 50 10).c := RSCanvas new.shapes := RSEllipse models: values.shapes @ RSPopup.c addAll: shapes.RSNormalizer size	shapes: shapes;	from: 20;	to: 30;	normalize. RSNormalizer color	shapes: shapes;	normalize. 	RSGridLayout new gapSize: 40; on: shapes.shapes @ RSLabeled.c @ RSCanvasController.c open
+
+-----------------------------
+values := #(20 10 5 30 24 32).links := { 20 -> #(10) . 5 -> #(24 . 20) . 10 -> #(32 30) } asDictionary.canvas := RSCanvas new.shapes := RSEllipse models: values.canvas addAll: shapes.shapes @ RSPopup.RSNormalizer size 	shapes: shapes; normalize.RSLineBuilder line	shapes: shapes;	connectToAll: [ :nb | links at: nb ifAbsent: [ #() ] ].RSTreeLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.100 timesRepeat: [ 	p := ((r nextInt: 500) - 250) @ ((r nextInt: 500) - 250).	shape := RSCircle new color: Color random translucent.	shape translateTo: p.		c add: shape.	c newAnimation		easing: RSEasing bounce;		from: p;		duration: ((r nextInt: 5) / 2) second;		to: p + (0 @ 100);		on: shape set: #position:;		when: RSAnimationEndEvent do: [ :evt | shape remove ].].	c
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).canvas := RSCanvas new.canvas add: box.canvas open
+
+-----------------------------
+RSCanvas new	add: (RSBox new size: 100; color: #blue);	openWithTitle: 'This is a blue box'
+
+-----------------------------
+box := RSBox new			size: 80;			color: #yellow;			border: (RSBorder new color: #blue; width: 10).canvas := RSCanvas new.canvas color: (UITheme current backgroundColor).canvas add: box.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 1000 do: [ :i |	canvas add: (RSBox new size: 10).].RSGridLayout on: canvas shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.labelAdd := RSLabel text: 'Add shapes'.labelAdd @ RSHighlightable red.canvas add: labelAdd.labelAdd setAsFixed.labelAdd translateTopLeftTo: 0 @ 0.r := Random new.canvas when: RSMouseClick do: [ :evt | 	canvas shapes do: #remove. 	canvas signalUpdate ].labelAdd when: RSMouseClick do: [ :evt | 	100 timesRepeat: [ 		shape := RSBox new						size: (r nextInt: 50);						color: Color random translucent;						translateTo: (r nextInt: 500) @ (r nextInt: 500).		canvas add: shape ].	"refresh the window"		canvas signalUpdate.	"make sure everything fits on screen"	canvas zoomToFit ].canvas open
+
+-----------------------------
+canvas := RSCanvas new.someColors := { Color red . Color blue . Color green }.shapes := RSGroup new.someColors do: [ :aColor | 	shapes add: (RSEllipse new size: 30; model: aColor; color: aColor) ].canvas addAll: shapes.shapes @ RSDraggable.shapes @ RSLabeled highlightable.shapes @ (RSPopup text: [ :aColor | 'My color is ', aColor asString]).RSHorizontalLineLayout on: shapes.canvas @ RSCanvasController.canvas open.
+
+-----------------------------
+values := #(20 30 40 50 10).c := RSCanvas new.shapes := RSEllipse models: values.shapes @ RSPopup.c addAll: shapes.RSNormalizer size	shapes: shapes;	from: 20;	to: 30;	normalize. RSNormalizer color	shapes: shapes;	normalize. 	RSGridLayout new gapSize: 40; on: shapes.shapes @ RSLabeled.c @ RSCanvasController.c open
+
+-----------------------------
+values := #(20 10 5 30 24 32).links := { 20 -> #(10) . 5 -> #(24 . 20) . 10 -> #(32 30) } asDictionary.canvas := RSCanvas new.shapes := RSEllipse models: values.canvas addAll: shapes.shapes @ RSPopup.RSNormalizer size 	shapes: shapes; normalize.RSLineBuilder line	shapes: shapes;	connectToAll: [ :nb | links at: nb ifAbsent: [ #() ] ].RSTreeLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.100 timesRepeat: [ 	p := ((r nextInt: 500) - 250) @ ((r nextInt: 500) - 250).	shape := RSCircle new color: Color random translucent.	shape translateTo: p.		c add: shape.	c newAnimation		easing: RSEasing bounce;		from: p;		duration: ((r nextInt: 5) / 2) second;		to: p + (0 @ 100);		on: shape set: #position:;		when: RSAnimationEndEvent do: [ :evt | shape remove ].].	c
