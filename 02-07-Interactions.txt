@@ -25,3 +25,84 @@ numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictio
 
 -----------------------------
 numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.highlightable2 := RSHighlightable new.highlightable2 highlightColor: Color blue.highlightable2 withConnectedShapes.nodes @ highlightable2.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 100).canvas addAll: shapes.shapes @ RSPopup @ RSDraggable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ RSLabeled.RSGridLayout new gapSize: 40; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]; highlightable).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ RSHighlightable red.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ (RSHighlightable new highlightColor: Color green).RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.highlightable := RSHighlightable new.highlightable highlightColor: Color green.highlightable highlightShapes: [ :aShape | 	shapes select: [ :s | (-1 to: 1) includes: (s model - aShape model)  ] ].shapes @ highlightable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.highlightable2 := RSHighlightable new.highlightable2 highlightColor: Color blue.highlightable2 withConnectedShapes.nodes @ highlightable2.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 100).canvas addAll: shapes.shapes @ RSPopup @ RSDraggable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ RSLabeled.RSGridLayout new gapSize: 40; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]; highlightable).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ RSHighlightable red.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ (RSHighlightable new highlightColor: Color green).RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.highlightable := RSHighlightable new.highlightable highlightColor: Color green.highlightable highlightShapes: [ :aShape | 	shapes select: [ :s | (-1 to: 1) includes: (s model - aShape model)  ] ].shapes @ highlightable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.highlightable2 := RSHighlightable new.highlightable2 highlightColor: Color blue.highlightable2 withConnectedShapes.nodes @ highlightable2.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 100).canvas addAll: shapes.shapes @ RSPopup @ RSDraggable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ RSLabeled.RSGridLayout new gapSize: 40; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSCircle models: (1 to: 9).canvas addAll: shapes.shapes @ (RSLabeled new text: [ :aModel | 'value = ', aModel asString ]; highlightable).RSGridLayout new gapSize: 20; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ RSHighlightable red.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.shapes @ (RSHighlightable new highlightColor: Color green).RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: (1 to: 30).shapes @ RSPopup @ RSDraggable.canvas addAll: shapes.highlightable := RSHighlightable new.highlightable highlightColor: Color green.highlightable highlightShapes: [ :aShape | 	shapes select: [ :s | (-1 to: 1) includes: (s model - aShape model)  ] ].shapes @ highlightable.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSCircle models: (1 to: numberOfNodes).nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.highlightable := RSHighlightable new.highlightable highlightColor: Color red.highlightable withEdges.nodes @ highlightable.highlightable2 := RSHighlightable new.highlightable2 highlightColor: Color blue.highlightable2 withConnectedShapes.nodes @ highlightable2.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open

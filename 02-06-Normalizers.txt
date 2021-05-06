@@ -43,3 +43,138 @@ canvas := RSCanvas new.scale := NSScale category20c.r := Random seed: 42.100
 
 -----------------------------
 canvas := RSCanvas new.palette := { 'e66e33' . 'fca300' . 'efdb2b' . 'a3bd21' . '009991' }             collect: [ :hexString | Color fromHexString: hexString ].scale := NSScale ordinal range: palette.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 5.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    from: 10;    to: 30;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize: [ :aNumber | aNumber * aNumber * aNumber ].    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+translations := #('Bonjour' 'Guten Morgen' 'Hola' 'Buongiorno' 'Dia dhuit').canvas := RSCanvas new.shapes := RSBox models: translations.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer height    shapes: shapes;    normalize: [ :text | (text select: #isVowel) size ].   RSNormalizer width    shapes: shapes;    normalize: [ :text | (text reject: #isVowel) size ]. RSNormalizer color    shapes: shapes;     from: Color green;     to: Color blue;    normalize: [ :text | text size ].RSHorizontalLineLayout new gapSize: 10; alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.canvas := RSCanvas new.dots := RSCircle models: classes forEach: [ :s :o | s borderColor: #black ].canvas addAll: dots. dots @ RSPopup.RSNormalizer size    shapes: dots;    from: 10;    to: 25;    normalize: #numberOfLinesOfCode.RSNormalizer color    shapes: dots;    from: Color yellow;    to: Color brown;    normalize: #numberOfLinesOfCode.canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).RSNormalizer position    shapes: dots;    from: 0 @ 0;    to: 500 @ -500;    normalize: [ :aClass | aClass numberOfMethods @ aClass numberOfLinesOfCode ].canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).canvas add: (RSArrowedLine new from: 0 @ 0; to: 500 @ 0).canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: Collection withAllSubclasses.shapes @ RSDraggable @ RSPopup.canvas addAll: shapes.RSNormalizer color    from: (Color gray alpha: 0.5);    to: (Color red alpha: 0.5);    shapes: shapes;    normalize: #numberOfMethods.RSNormalizer size    shapes: shapes;    normalize: #numberOfMethods.RSLineBuilder line    canvas: canvas;    withBorderAttachPoint;    connectFrom: #superclass.RSNormalizer width    shapes: canvas lines;    from: 2;    to: 10;    normalize: [ :association | (association key selectors intersection: association value selectors) size ].RSTreeLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+s := NSScale linear.s range: { 5 . 10 }.s scale: 0. "=> 5"s scale: 0.5. "=> 7.5"s scale: 1. "=> 10"
+
+-----------------------------
+s := NSScale linear.s domain: { -10 . -5 }.s range: { 10 . 5 }.s scale: -5. "=> 5"s scale: -7.5. "=> 7.5"s scale: -10. "=> 10"
+
+-----------------------------
+s := NSScale linear.s range: { Color white . Color black }.s scale: 0.5  "=> Color gray"
+
+-----------------------------
+values := 0 to: 1 by: 0.1.scale := NSScale linear range: { Color blue . Color red }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+values := 0 to: 1 count: 20.scale := NSScale linear                 range: { Color blue . Color gray . Color red };                 domain: { 0 . 0.5 . 1 }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+sc := NSScale linear  range: { #white . #gray . #red }; domain: { 0 . 1 . 2}.ss := NSScale linear  range: { 80 . 30 . 80 }; domain: { 0 . 1 . 2}.  c := RSCanvas new.0 to: 2 by: 0.1 do: [ :i | s := RSBox new width: 30; height: (ss scale: i); model: i; color: (sc scale: i). c add: s ].RSHorizontalLineLayout new alignMiddle; on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.scale := NSScale ordinalColored: 3.r := Random seed: 42.9 timesRepeat: [     txt := { 'hello' . 'bonjour' . 'Guten Morgen' } atRandom: r.    g := RSGroup new.    g add: (RSBox new width: 100; height: 20; model: txt; color: (scale scale: txt)).    g add: (RSLabel new text: txt).    c add: g asShape ].RSGridLayout new lineItemsCount: 3; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+canvas := RSCanvas new.scale := NSScale category20c.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 10.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.palette := { 'e66e33' . 'fca300' . 'efdb2b' . 'a3bd21' . '009991' }             collect: [ :hexString | Color fromHexString: hexString ].scale := NSScale ordinal range: palette.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 5.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    from: 10;    to: 30;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize: [ :aNumber | aNumber * aNumber * aNumber ].    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+translations := #('Bonjour' 'Guten Morgen' 'Hola' 'Buongiorno' 'Dia dhuit').canvas := RSCanvas new.shapes := RSBox models: translations.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer height    shapes: shapes;    normalize: [ :text | (text select: #isVowel) size ].   RSNormalizer width    shapes: shapes;    normalize: [ :text | (text reject: #isVowel) size ]. RSNormalizer color    shapes: shapes;     from: Color green;     to: Color blue;    normalize: [ :text | text size ].RSHorizontalLineLayout new gapSize: 10; alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.canvas := RSCanvas new.dots := RSCircle models: classes forEach: [ :s :o | s borderColor: #black ].canvas addAll: dots. dots @ RSPopup.RSNormalizer size    shapes: dots;    from: 10;    to: 25;    normalize: #numberOfLinesOfCode.RSNormalizer color    shapes: dots;    from: Color yellow;    to: Color brown;    normalize: #numberOfLinesOfCode.canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).RSNormalizer position    shapes: dots;    from: 0 @ 0;    to: 500 @ -500;    normalize: [ :aClass | aClass numberOfMethods @ aClass numberOfLinesOfCode ].canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).canvas add: (RSArrowedLine new from: 0 @ 0; to: 500 @ 0).canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: Collection withAllSubclasses.shapes @ RSDraggable @ RSPopup.canvas addAll: shapes.RSNormalizer color    from: (Color gray alpha: 0.5);    to: (Color red alpha: 0.5);    shapes: shapes;    normalize: #numberOfMethods.RSNormalizer size    shapes: shapes;    normalize: #numberOfMethods.RSLineBuilder line    canvas: canvas;    withBorderAttachPoint;    connectFrom: #superclass.RSNormalizer width    shapes: canvas lines;    from: 2;    to: 10;    normalize: [ :association | (association key selectors intersection: association value selectors) size ].RSTreeLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+s := NSScale linear.s range: { 5 . 10 }.s scale: 0. "=> 5"s scale: 0.5. "=> 7.5"s scale: 1. "=> 10"
+
+-----------------------------
+s := NSScale linear.s domain: { -10 . -5 }.s range: { 10 . 5 }.s scale: -5. "=> 5"s scale: -7.5. "=> 7.5"s scale: -10. "=> 10"
+
+-----------------------------
+s := NSScale linear.s range: { Color white . Color black }.s scale: 0.5  "=> Color gray"
+
+-----------------------------
+values := 0 to: 1 by: 0.1.scale := NSScale linear range: { Color blue . Color red }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+values := 0 to: 1 count: 20.scale := NSScale linear                 range: { Color blue . Color gray . Color red };                 domain: { 0 . 0.5 . 1 }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+sc := NSScale linear  range: { #white . #gray . #red }; domain: { 0 . 1 . 2}.ss := NSScale linear  range: { 80 . 30 . 80 }; domain: { 0 . 1 . 2}.  c := RSCanvas new.0 to: 2 by: 0.1 do: [ :i | s := RSBox new width: 30; height: (ss scale: i); model: i; color: (sc scale: i). c add: s ].RSHorizontalLineLayout new alignMiddle; on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.scale := NSScale ordinalColored: 3.r := Random seed: 42.9 timesRepeat: [     txt := { 'hello' . 'bonjour' . 'Guten Morgen' } atRandom: r.    g := RSGroup new.    g add: (RSBox new width: 100; height: 20; model: txt; color: (scale scale: txt)).    g add: (RSLabel new text: txt).    c add: g asShape ].RSGridLayout new lineItemsCount: 3; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+canvas := RSCanvas new.scale := NSScale category20c.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 10.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.palette := { 'e66e33' . 'fca300' . 'efdb2b' . 'a3bd21' . '009991' }             collect: [ :hexString | Color fromHexString: hexString ].scale := NSScale ordinal range: palette.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 5.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    from: 10;    to: 30;    normalize.    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+values := #(3 6 10 2).canvas := RSCanvas new.shapes := RSCircle models: values.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer size    shapes: shapes;    normalize: [ :aNumber | aNumber * aNumber * aNumber ].    RSHorizontalLineLayout new alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+translations := #('Bonjour' 'Guten Morgen' 'Hola' 'Buongiorno' 'Dia dhuit').canvas := RSCanvas new.shapes := RSBox models: translations.canvas addAll: shapes.shapes @ RSLabeled.RSNormalizer height    shapes: shapes;    normalize: [ :text | (text select: #isVowel) size ].   RSNormalizer width    shapes: shapes;    normalize: [ :text | (text reject: #isVowel) size ]. RSNormalizer color    shapes: shapes;     from: Color green;     to: Color blue;    normalize: [ :text | text size ].RSHorizontalLineLayout new gapSize: 10; alignMiddle; on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.canvas := RSCanvas new.dots := RSCircle models: classes forEach: [ :s :o | s borderColor: #black ].canvas addAll: dots. dots @ RSPopup.RSNormalizer size    shapes: dots;    from: 10;    to: 25;    normalize: #numberOfLinesOfCode.RSNormalizer color    shapes: dots;    from: Color yellow;    to: Color brown;    normalize: #numberOfLinesOfCode.canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).RSNormalizer position    shapes: dots;    from: 0 @ 0;    to: 500 @ -500;    normalize: [ :aClass | aClass numberOfMethods @ aClass numberOfLinesOfCode ].canvas add: (RSArrowedLine new from: 0 @ 0; to: 0 @ -500).canvas add: (RSArrowedLine new from: 0 @ 0; to: 500 @ 0).canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.shapes := RSEllipse models: Collection withAllSubclasses.shapes @ RSDraggable @ RSPopup.canvas addAll: shapes.RSNormalizer color    from: (Color gray alpha: 0.5);    to: (Color red alpha: 0.5);    shapes: shapes;    normalize: #numberOfMethods.RSNormalizer size    shapes: shapes;    normalize: #numberOfMethods.RSLineBuilder line    canvas: canvas;    withBorderAttachPoint;    connectFrom: #superclass.RSNormalizer width    shapes: canvas lines;    from: 2;    to: 10;    normalize: [ :association | (association key selectors intersection: association value selectors) size ].RSTreeLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+s := NSScale linear.s range: { 5 . 10 }.s scale: 0. "=> 5"s scale: 0.5. "=> 7.5"s scale: 1. "=> 10"
+
+-----------------------------
+s := NSScale linear.s domain: { -10 . -5 }.s range: { 10 . 5 }.s scale: -5. "=> 5"s scale: -7.5. "=> 7.5"s scale: -10. "=> 10"
+
+-----------------------------
+s := NSScale linear.s range: { Color white . Color black }.s scale: 0.5  "=> Color gray"
+
+-----------------------------
+values := 0 to: 1 by: 0.1.scale := NSScale linear range: { Color blue . Color red }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+values := 0 to: 1 count: 20.scale := NSScale linear                 range: { Color blue . Color gray . Color red };                 domain: { 0 . 0.5 . 1 }.canvas := RSCanvas new.shapes := RSCircle models: values forEach: [ :shape :number |                     shape color: (scale scale: number) ].shapes @ RSPopup.               canvas addAll: shapes.RSFlowLayout on: shapes.        canvas zoomToFit.canvas open
+
+-----------------------------
+sc := NSScale linear  range: { #white . #gray . #red }; domain: { 0 . 1 . 2}.ss := NSScale linear  range: { 80 . 30 . 80 }; domain: { 0 . 1 . 2}.  c := RSCanvas new.0 to: 2 by: 0.1 do: [ :i | s := RSBox new width: 30; height: (ss scale: i); model: i; color: (sc scale: i). c add: s ].RSHorizontalLineLayout new alignMiddle; on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.scale := NSScale ordinalColored: 3.r := Random seed: 42.9 timesRepeat: [     txt := { 'hello' . 'bonjour' . 'Guten Morgen' } atRandom: r.    g := RSGroup new.    g add: (RSBox new width: 100; height: 20; model: txt; color: (scale scale: txt)).    g add: (RSLabel new text: txt).    c add: g asShape ].RSGridLayout new lineItemsCount: 3; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+canvas := RSCanvas new.scale := NSScale category20c.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 10.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+canvas := RSCanvas new.palette := { 'e66e33' . 'fca300' . 'efdb2b' . 'a3bd21' . '009991' }             collect: [ :hexString | Color fromHexString: hexString ].scale := NSScale ordinal range: palette.r := Random seed: 42.100 timesRepeat: [     aNumber := r nextInt: 5.    circle := RSCircle new model: aNumber.    circle @ RSPopup.    circle color: (scale scale: aNumber).    canvas add: circle ].RSFlowLayout on: canvas nodes.canvas @ RSCanvasController.canvas open

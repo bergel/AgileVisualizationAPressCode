@@ -166,3 +166,252 @@ canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new
 
 -----------------------------
 canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box2;	to: box1;	controlPointsController: RSVerticalCPAPController new;  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.c add: box.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new width: (r nextInteger: 80); height: (r nextInteger: 80); color: Color gray; cornerRadius: 10.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.(30 to: 150 by: 10) do: [ :nb |	b := RSCircle size: nb.	c add: b ].RSFlowLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.c add: (RSLabel text: 'Hello World').c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout new alignLabel; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.font := LogicalFont familyName: 'Source Code Pro' pointSize: 20.words := String loremIpsum splitOn: ' '.c addAll: (words collect: [ :word |  RSLabel new  font: font;  text: word;  yourself ]).RSFlowLayout new gapSize: 10; on: c shapes.c shapes @ RSHighlightable red.c shapes @ RSDraggable.c @ RSCanvasController.c open
+
+-----------------------------
+FreeTypeFontProvider current updateFromSystem families
+
+-----------------------------
+styles := #(#italic #bold #normal #struckOut #underline).c := RSCanvas new.styles do: [ :aStyle |	label := RSLabel text: aStyle asString.	label perform: aStyle.	c add: label ].RSVerticalLineLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.polygon := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: 'FFAE0B'.polygon cornerRadii: 5.polygon @ RSDraggable.polygon2 := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: Color red translucent.polygon2 @ RSDraggable.polygon2 rotateByDegrees: 90.polygon2 translateBy: 0 @ -50.c add: polygon.c add: polygon2.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.svgPath := 'M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80'.svg := RSSVGPath new svgPath: svgPath.c add: svg.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.svgPaths := 	#('M17.46,22H6.54a4.55,4.55,0,0,1-3.42-7.54L9,7.75V4a1,1,0,0,1,2,0V	8.12a1,1,0,0,1-.25.66l-6.12,7A2.54,2.54,0,0,0,6.54,20H17.46a2.54,	2.54,0,0,0,1.91-4.22l-6.12-7A1,1,0,0,1,13,8.12V6.5a1,1,0,0,1,2,	0V7.75l5.88,6.71A4.55,4.55,0,0,1,17.46,22Z'	'M15,4.12H9a1,1,0,0,1,0-2h6a1,1,0,0,1,0,2Z'	'M19,15H10a1,1,0,0,1,0-2h9a1,1,0,0,1,0,2Z'	'M7,18a1,1,0,0,1-1-1,1,1,0,0,1,.08-.38.93.93,0,0,1,.21-.33,1,1,0,0,	1,1.42,0,1,1,0,0,1,.21.33A.84.84,0,0,1,8,17a1,1,0,0,1-1,1Z'	'M11,21a1,1,0,0,1-.38-.08.93.93,0,0,1-.33-.21,1,1,0,0,1,	0-1.42.93.93,0,0,1,.33-.21,1,1,0,0,1,1.09.21A1,1,0,0,1,11,21Z'	'M15,18l-.19,0a.6.6,0,0,1-.19-.06.76.76,0,0,	1-.18-.09l-.15-.12A1.05,1.05,0,0,1,14,17a1,1,0,0,1,.08-.38.93.93,0,0,1,	.21-.33,1.58,1.58,0,0,1,.15-.12.76.76,0,0,1,.18-.09.6.6,0,0,1,	.19-.06,1,1,0,0,1,.9.27.93.93,0,0,1,.21.33A1,1,0,0,1,16,17a1,1,0,0,1-1,1Z'	'M12,12a1.05,1.05,0,0,1-.71-.29,1.15,1.15,0,0,1-.21-.33.94.94,0,0,	1,0-.76,1,1,0,0,1,.21-.33A1,1,0,0,1,12.2,	10l.18.06.18.09.15.12a1.15,1.15,0,0,1,.21.33A1,1,0,0,1,13,11a1,1,	0,0,1-1,1Z'	).25 timesRepeat: [ 	aRandomColor := Color random translucent.	svg := svgPaths collect: [ :path | RSSVGPath new svgPath: path ] as: RSGroup.	svg color: aRandomColor.	shape := svg asShape.	c add: shape.].RSGridLayout new lineItemsCount: 5; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.lbl := RSLabel text: 'Top left corner'.c add: lbl.lbl setAsFixed.lbl translateTopLeftTo: 0 @ 0.c open
+
+-----------------------------
+c := RSCanvas new.(0 to: 90 count: 10) do: [ :rotation |	lbl := RSLabel text: 'Hello world'.	lbl color: Color gray translucent.	lbl rotateByDegrees: rotation.	lbl @ RSHighlightable red.	lbl translateTopLeftTo: 0 @ 0.	c add: lbl ].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new 			width: (r nextInteger: 80); 			height: (r nextInteger: 80); 			color: Color gray; 			cornerRadius: 10.	box borderColor: #black.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.b := RSBorder new color: Color blue.b dashArray: #(5 1 5).(30 to: 60 by: 5) do: [ :nb | box := RSBox new size: nb; cornerRadius: 10. ellipse := RSEllipse new width: nb; height: nb + 10. box border: b. ellipse border: b. c add: box; add: ellipse ].RSFlowLayout on: c shapes.c @ RSCanvasController.c newAnimation  from: 0; to: 40; on: b set: #dashOffset:.c open
+
+-----------------------------
+c := RSCanvas new.numbers := 1 to: 9.numbers do: [ :nb |	circle := RSCircle new.	circle model: nb.	circle @ RSPopup.	c add: circle ].RSNormalizer size 	shapes: c nodes; 	from: 5; to: 20; 	normalize: #yourself.RSNormalizer color 	shapes: c nodes; 	from: Color gray; to: Color red; 	normalize: [ :aNumber | aNumber raisedTo: 3 ].RSFlowLayout on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.numbers := 1 to: 9.circles := RSCircle models: numbers. circles @ RSPopup.c addAll: circles.RSGridLayout on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.line := RSLine new.line from: 30 @ 40.line to: 150 @ 120.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line from: box.line to: circle.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable."We make the box and circle translucent"{ box . circle } asGroup translucent.circle translateTo: 50 @ 40.line := RSLine new.line color: Color red.line from: box.line to: circle.line attachPoint: RSBorderAttachPoint new.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line withBorderAttachPoint.line marker: (RSCircle new size: 5; color: #red) asMarker.line from: box.line to: circle.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -5@9 . 0@0 . 5@9 . 0@0 };		border: (RSBorder new width: 1);		asMarker.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.line markerEnd: markerShape.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSArrowedLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -3 @ 9 . 0 @ 0 . 3 @ 9 . 0 @ 0 };		border: (RSBorder new width: 1);		asMarker.markerShape offsetRatio: 0.3.target := RSLabel text: 'target'.c add: target.starts := RSCircle models: (1 to: 20).starts @ RSDraggable.c addAll: starts.starts do: [ :startShape |	line := RSLine new. 	line from: startShape.	line to: target.	line withBorderAttachPoint.	line markerEnd: markerShape.	c add: line.].RSForceBasedLayout new charge: -300; on: c nodes.c zoomToFit.c open
+
+-----------------------------
+canvas := RSCanvas new.canvas add: (RSBezier new				color: Color red;				controlPoints: { (0 @ 0). (100 @ 100). (200 @ 0). (300 @ 100)}).canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box1;	to: box2;	controlPointsController: (			RSBlockCPController new				block: [ :aLine |					| mid |   					mid := (box1 position + box2 position) / 2.					{(box1 position) . 					(box1 position x @ mid y) .					(box2 position x @ mid y) .					(box2 position)} ];				yourself);  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box2;	to: box1;	controlPointsController: RSVerticalCPAPController new;  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.c add: box.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new width: (r nextInteger: 80); height: (r nextInteger: 80); color: Color gray; cornerRadius: 10.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.(30 to: 150 by: 10) do: [ :nb |	b := RSCircle size: nb.	c add: b ].RSFlowLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.c add: (RSLabel text: 'Hello World').c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout new alignLabel; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.font := LogicalFont familyName: 'Source Code Pro' pointSize: 20.words := String loremIpsum splitOn: ' '.c addAll: (words collect: [ :word |  RSLabel new  font: font;  text: word;  yourself ]).RSFlowLayout new gapSize: 10; on: c shapes.c shapes @ RSHighlightable red.c shapes @ RSDraggable.c @ RSCanvasController.c open
+
+-----------------------------
+FreeTypeFontProvider current updateFromSystem families
+
+-----------------------------
+styles := #(#italic #bold #normal #struckOut #underline).c := RSCanvas new.styles do: [ :aStyle |	label := RSLabel text: aStyle asString.	label perform: aStyle.	c add: label ].RSVerticalLineLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.polygon := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: 'FFAE0B'.polygon cornerRadii: 5.polygon @ RSDraggable.polygon2 := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: Color red translucent.polygon2 @ RSDraggable.polygon2 rotateByDegrees: 90.polygon2 translateBy: 0 @ -50.c add: polygon.c add: polygon2.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.svgPath := 'M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80'.svg := RSSVGPath new svgPath: svgPath.c add: svg.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.svgPaths := 	#('M17.46,22H6.54a4.55,4.55,0,0,1-3.42-7.54L9,7.75V4a1,1,0,0,1,2,0V	8.12a1,1,0,0,1-.25.66l-6.12,7A2.54,2.54,0,0,0,6.54,20H17.46a2.54,	2.54,0,0,0,1.91-4.22l-6.12-7A1,1,0,0,1,13,8.12V6.5a1,1,0,0,1,2,	0V7.75l5.88,6.71A4.55,4.55,0,0,1,17.46,22Z'	'M15,4.12H9a1,1,0,0,1,0-2h6a1,1,0,0,1,0,2Z'	'M19,15H10a1,1,0,0,1,0-2h9a1,1,0,0,1,0,2Z'	'M7,18a1,1,0,0,1-1-1,1,1,0,0,1,.08-.38.93.93,0,0,1,.21-.33,1,1,0,0,	1,1.42,0,1,1,0,0,1,.21.33A.84.84,0,0,1,8,17a1,1,0,0,1-1,1Z'	'M11,21a1,1,0,0,1-.38-.08.93.93,0,0,1-.33-.21,1,1,0,0,1,	0-1.42.93.93,0,0,1,.33-.21,1,1,0,0,1,1.09.21A1,1,0,0,1,11,21Z'	'M15,18l-.19,0a.6.6,0,0,1-.19-.06.76.76,0,0,	1-.18-.09l-.15-.12A1.05,1.05,0,0,1,14,17a1,1,0,0,1,.08-.38.93.93,0,0,1,	.21-.33,1.58,1.58,0,0,1,.15-.12.76.76,0,0,1,.18-.09.6.6,0,0,1,	.19-.06,1,1,0,0,1,.9.27.93.93,0,0,1,.21.33A1,1,0,0,1,16,17a1,1,0,0,1-1,1Z'	'M12,12a1.05,1.05,0,0,1-.71-.29,1.15,1.15,0,0,1-.21-.33.94.94,0,0,	1,0-.76,1,1,0,0,1,.21-.33A1,1,0,0,1,12.2,	10l.18.06.18.09.15.12a1.15,1.15,0,0,1,.21.33A1,1,0,0,1,13,11a1,1,	0,0,1-1,1Z'	).25 timesRepeat: [ 	aRandomColor := Color random translucent.	svg := svgPaths collect: [ :path | RSSVGPath new svgPath: path ] as: RSGroup.	svg color: aRandomColor.	shape := svg asShape.	c add: shape.].RSGridLayout new lineItemsCount: 5; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.lbl := RSLabel text: 'Top left corner'.c add: lbl.lbl setAsFixed.lbl translateTopLeftTo: 0 @ 0.c open
+
+-----------------------------
+c := RSCanvas new.(0 to: 90 count: 10) do: [ :rotation |	lbl := RSLabel text: 'Hello world'.	lbl color: Color gray translucent.	lbl rotateByDegrees: rotation.	lbl @ RSHighlightable red.	lbl translateTopLeftTo: 0 @ 0.	c add: lbl ].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new 			width: (r nextInteger: 80); 			height: (r nextInteger: 80); 			color: Color gray; 			cornerRadius: 10.	box borderColor: #black.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.b := RSBorder new color: Color blue.b dashArray: #(5 1 5).(30 to: 60 by: 5) do: [ :nb | box := RSBox new size: nb; cornerRadius: 10. ellipse := RSEllipse new width: nb; height: nb + 10. box border: b. ellipse border: b. c add: box; add: ellipse ].RSFlowLayout on: c shapes.c @ RSCanvasController.c newAnimation  from: 0; to: 40; on: b set: #dashOffset:.c open
+
+-----------------------------
+c := RSCanvas new.numbers := 1 to: 9.numbers do: [ :nb |	circle := RSCircle new.	circle model: nb.	circle @ RSPopup.	c add: circle ].RSNormalizer size 	shapes: c nodes; 	from: 5; to: 20; 	normalize: #yourself.RSNormalizer color 	shapes: c nodes; 	from: Color gray; to: Color red; 	normalize: [ :aNumber | aNumber raisedTo: 3 ].RSFlowLayout on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.numbers := 1 to: 9.circles := RSCircle models: numbers. circles @ RSPopup.c addAll: circles.RSGridLayout on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.line := RSLine new.line from: 30 @ 40.line to: 150 @ 120.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line from: box.line to: circle.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable."We make the box and circle translucent"{ box . circle } asGroup translucent.circle translateTo: 50 @ 40.line := RSLine new.line color: Color red.line from: box.line to: circle.line attachPoint: RSBorderAttachPoint new.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line withBorderAttachPoint.line marker: (RSCircle new size: 5; color: #red) asMarker.line from: box.line to: circle.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -5@9 . 0@0 . 5@9 . 0@0 };		border: (RSBorder new width: 1);		asMarker.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.line markerEnd: markerShape.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSArrowedLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -3 @ 9 . 0 @ 0 . 3 @ 9 . 0 @ 0 };		border: (RSBorder new width: 1);		asMarker.markerShape offsetRatio: 0.3.target := RSLabel text: 'target'.c add: target.starts := RSCircle models: (1 to: 20).starts @ RSDraggable.c addAll: starts.starts do: [ :startShape |	line := RSLine new. 	line from: startShape.	line to: target.	line withBorderAttachPoint.	line markerEnd: markerShape.	c add: line.].RSForceBasedLayout new charge: -300; on: c nodes.c zoomToFit.c open
+
+-----------------------------
+canvas := RSCanvas new.canvas add: (RSBezier new				color: Color red;				controlPoints: { (0 @ 0). (100 @ 100). (200 @ 0). (300 @ 100)}).canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box1;	to: box2;	controlPointsController: (			RSBlockCPController new				block: [ :aLine |					| mid |   					mid := (box1 position + box2 position) / 2.					{(box1 position) . 					(box1 position x @ mid y) .					(box2 position x @ mid y) .					(box2 position)} ];				yourself);  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box2;	to: box1;	controlPointsController: RSVerticalCPAPController new;  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.c add: box.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new width: (r nextInteger: 80); height: (r nextInteger: 80); cornerRadius: 10.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.(30 to: 150 by: 10) do: [ :nb |	b := RSCircle size: nb.	c add: b ].RSFlowLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.c add: (RSLabel text: 'Hello World').c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+words := String loremIpsum substrings.c := RSCanvas new. r := Random seed: 42.words do: [ :w |	label := RSLabel text: w.	label fontSize: (r nextInteger: 30).	label @ RSHighlightable red.	c add: label ].RSFlowLayout new alignLabel; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.font := LogicalFont familyName: 'Source Code Pro' pointSize: 20.words := String loremIpsum splitOn: ' '.c addAll: (words collect: [ :word |  RSLabel new  font: font;  text: word;  yourself ]).RSFlowLayout new gapSize: 10; on: c shapes.c shapes @ RSHighlightable red.c shapes @ RSDraggable.c @ RSCanvasController.c open
+
+-----------------------------
+FreeTypeFontProvider current updateFromSystem families
+
+-----------------------------
+styles := #(#italic #bold #normal #struckOut #underline).c := RSCanvas new.styles do: [ :aStyle |	label := RSLabel text: aStyle asString.	label perform: aStyle.	c add: label ].RSVerticalLineLayout on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.polygon := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: 'FFAE0B'.polygon cornerRadii: 5.polygon @ RSDraggable.polygon2 := RSPolygon new			points: { 0 @ -50 . 50 @ 0 . -50 @ 0 };			color: Color red translucent.polygon2 @ RSDraggable.polygon2 rotateByDegrees: 90.polygon2 translateBy: 0 @ -50.c add: polygon.c add: polygon2.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.svgPath := 'M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80'.svg := RSSVGPath new svgPath: svgPath.c add: svg.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.svgPaths := 	#('M17.46,22H6.54a4.55,4.55,0,0,1-3.42-7.54L9,7.75V4a1,1,0,0,1,2,0V	8.12a1,1,0,0,1-.25.66l-6.12,7A2.54,2.54,0,0,0,6.54,20H17.46a2.54,	2.54,0,0,0,1.91-4.22l-6.12-7A1,1,0,0,1,13,8.12V6.5a1,1,0,0,1,2,	0V7.75l5.88,6.71A4.55,4.55,0,0,1,17.46,22Z'	'M15,4.12H9a1,1,0,0,1,0-2h6a1,1,0,0,1,0,2Z'	'M19,15H10a1,1,0,0,1,0-2h9a1,1,0,0,1,0,2Z'	'M7,18a1,1,0,0,1-1-1,1,1,0,0,1,.08-.38.93.93,0,0,1,.21-.33,1,1,0,0,	1,1.42,0,1,1,0,0,1,.21.33A.84.84,0,0,1,8,17a1,1,0,0,1-1,1Z'	'M11,21a1,1,0,0,1-.38-.08.93.93,0,0,1-.33-.21,1,1,0,0,1,	0-1.42.93.93,0,0,1,.33-.21,1,1,0,0,1,1.09.21A1,1,0,0,1,11,21Z'	'M15,18l-.19,0a.6.6,0,0,1-.19-.06.76.76,0,0,	1-.18-.09l-.15-.12A1.05,1.05,0,0,1,14,17a1,1,0,0,1,.08-.38.93.93,0,0,1,	.21-.33,1.58,1.58,0,0,1,.15-.12.76.76,0,0,1,.18-.09.6.6,0,0,1,	.19-.06,1,1,0,0,1,.9.27.93.93,0,0,1,.21.33A1,1,0,0,1,16,17a1,1,0,0,1-1,1Z'	'M12,12a1.05,1.05,0,0,1-.71-.29,1.15,1.15,0,0,1-.21-.33.94.94,0,0,	1,0-.76,1,1,0,0,1,.21-.33A1,1,0,0,1,12.2,	10l.18.06.18.09.15.12a1.15,1.15,0,0,1,.21.33A1,1,0,0,1,13,11a1,1,	0,0,1-1,1Z'	).25 timesRepeat: [ 	aRandomColor := Color random translucent.	svg := svgPaths collect: [ :path | RSSVGPath new svgPath: path ] as: RSGroup.	svg color: aRandomColor.	shape := svg asShape.	c add: shape.].RSGridLayout new lineItemsCount: 5; on: c shapes.c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.lbl := RSLabel text: 'Top left corner'.c add: lbl.lbl setAsFixed.lbl translateTopLeftTo: 0 @ 0.c open
+
+-----------------------------
+c := RSCanvas new.(0 to: 90 count: 10) do: [ :rotation |	lbl := RSLabel text: 'Hello world'.	lbl color: Color gray translucent.	lbl rotateByDegrees: rotation.	lbl @ RSHighlightable red.	lbl translateTopLeftTo: 0 @ 0.	c add: lbl ].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.r := Random seed: 42.40 timesRepeat: [	box := RSBox new 			width: (r nextInteger: 80); 			height: (r nextInteger: 80); 			color: Color gray; 			cornerRadius: 10.	box borderColor: #black.	box color: Color random translucent.	box translateTo: (r nextInteger: 200) @ (r nextInteger: 200).	c add: box.].c @ RSCanvasController.c open
+
+-----------------------------
+c := RSCanvas new.b := RSBorder new color: Color blue.b dashArray: #(5 1 5).(30 to: 60 by: 5) do: [ :nb | box := RSBox new size: nb; cornerRadius: 10. ellipse := RSEllipse new width: nb; height: nb + 10. box border: b. ellipse border: b. c add: box; add: ellipse ].RSFlowLayout on: c shapes.c @ RSCanvasController.c newAnimation  from: 0; to: 40; on: b set: #dashOffset:.c open
+
+-----------------------------
+c := RSCanvas new.numbers := 1 to: 9.numbers do: [ :nb |	circle := RSCircle new.	circle model: nb.	circle @ RSPopup.	c add: circle ].RSNormalizer size 	shapes: c nodes; 	from: 5; to: 20; 	normalize: #yourself.RSNormalizer color 	shapes: c nodes; 	from: Color gray; to: Color red; 	normalize: [ :aNumber | aNumber raisedTo: 3 ].RSFlowLayout on: c shapes.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.line := RSLine new.line from: 30 @ 40.line to: 150 @ 120.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line from: box.line to: circle.c add: line.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable."We make the box and circle translucent"{ box . circle } asGroup translucent.circle translateTo: 50 @ 40.line := RSLine new.line color: Color red.line from: box.line to: circle.line attachPoint: RSBorderAttachPoint new.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.box := RSBox new.circle := RSCircle new.c add: box; add: circle.box @ RSDraggable.circle @ RSDraggable.circle translateTo: 50 @ 40.line := RSLine new.line withBorderAttachPoint.line marker: (RSCircle new size: 5; color: #red) asMarker.line from: box.line to: circle.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -5@9 . 0@0 . 5@9 . 0@0 };		border: (RSBorder new width: 1);		asMarker.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.line markerEnd: markerShape.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.labelStart := RSLabel text: 'start'.labelEnd := RSLabel text: 'end'.labelStart @ RSDraggable.labelEnd @ RSDraggable.c add: labelStart.c add: labelEnd.labelEnd translateBy: 80 @ 60.line := RSArrowedLine new. line from: labelStart.line to: labelEnd.line withBorderAttachPoint.c add: line.c zoomToFit.c open
+
+-----------------------------
+c := RSCanvas new.markerShape := RSPolygon new		privatePoints: { -3 @ 9 . 0 @ 0 . 3 @ 9 . 0 @ 0 };		border: (RSBorder new width: 1);		asMarker.markerShape offsetRatio: 0.3.target := RSLabel text: 'target'.c add: target.starts := RSCircle models: (1 to: 20).starts @ RSDraggable.c addAll: starts.starts do: [ :startShape |	line := RSLine new. 	line from: startShape.	line to: target.	line withBorderAttachPoint.	line markerEnd: markerShape.	c add: line.].RSForceBasedLayout new charge: -300; on: c nodes.c zoomToFit.c open
+
+-----------------------------
+canvas := RSCanvas new.canvas add: (RSBezier new				color: Color red;				controlPoints: { (0 @ 0). (100 @ 100). (200 @ 0). (300 @ 100)}).canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box1;	to: box2;	controlPointsController: (			RSBlockCPController new				block: [ :aLine |					| mid |   					mid := (box1 position + box2 position) / 2.					{(box1 position) . 					(box1 position x @ mid y) .					(box2 position x @ mid y) .					(box2 position)} ];				yourself);  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new. box1 := RSBox new color: Color blue.box2 := RSBox new color: Color red.box2 translateTo: 100 @ -200.box1 @ RSDraggable.box2 @ RSDraggable.canvas add: box1; add: box2. bezierLine := RSBezier new	withVerticalAttachPoint;	from: box2;	to: box1;	controlPointsController: RSVerticalCPAPController new;  yourself.canvas add: bezierLine.canvas zoomToFit.canvas open

@@ -13,3 +13,48 @@ b := RSCanvas  new.b addAll: (RSCircle models: (1 to: 4)).b shapes @ RSDraggab
 
 -----------------------------
 numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSLabel models: (1 to: numberOfNodes).nodes color: #red.nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.classes do: [ :cls |	fromBox := boxes shapeFromModel: cls superclass.	toBox := boxes shapeFromModel: cls.	fromBox notNil ifTrue: [ 		line := RSLine new.		line from: fromBox.		line to: toBox.		c add: line ].	 ].RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder line.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder orthoVertical.lb withVerticalAttachPoint.lb capRound.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+b := RSCanvas  new.b addAll: (RSCircle models: (1 to: 4)).b shapes @ RSDraggable @ RSPopup.RSLineBuilder line	color: Color red translucent;	canvas: b;	withBorderAttachPoint;	useAssociations: { 1 -> 2 . 2 -> 3 . 4 -> 1 . 3 -> 4 }.RSGridLayout new gapSize: 30; on: b nodes.b @ RSCanvasController.b open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSLabel models: (1 to: numberOfNodes).nodes color: #red.nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.classes do: [ :cls |	fromBox := boxes shapeFromModel: cls superclass.	toBox := boxes shapeFromModel: cls.	fromBox notNil ifTrue: [ 		line := RSLine new.		line from: fromBox.		line to: toBox.		c add: line ].	 ].RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder line.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder orthoVertical.lb withVerticalAttachPoint.lb capRound.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+b := RSCanvas  new.b addAll: (RSCircle models: (1 to: 4)).b shapes @ RSDraggable @ RSPopup.RSLineBuilder line	color: Color red translucent;	canvas: b;	withBorderAttachPoint;	useAssociations: { 1 -> 2 . 2 -> 3 . 4 -> 1 . 3 -> 4 }.RSGridLayout new gapSize: 30; on: b nodes.b @ RSCanvasController.b open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSLabel models: (1 to: numberOfNodes).nodes color: #red.nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new."Build nodes"boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes."Connect nodes"classes do: [ :cls |	fromBox := boxes shapeFromModel: cls superclass.	toBox := boxes shapeFromModel: cls.	fromBox notNil ifTrue: [ 		line := RSLine new.		line from: fromBox.		line to: toBox.		c add: line ].	 ].RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder line.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+classes := Collection withAllSubclasses.c := RSCanvas new.boxes := RSCircle models: classes.c addAll: boxes. RSFlowLayout on: c shapes.lb := RSLineBuilder orthoVertical.lb withVerticalAttachPoint.lb capRound.lb shapes: boxes.lb connectFrom: #superclass.RSTreeLayout on: c nodes.c @ RSCanvasController.c open
+
+-----------------------------
+b := RSCanvas  new.b addAll: (RSCircle models: (1 to: 4)).b shapes @ RSDraggable @ RSPopup.RSLineBuilder line	color: Color red translucent;	canvas: b;	withBorderAttachPoint;	useAssociations: { 1 -> 2 . 2 -> 3 . 4 -> 1 . 3 -> 4 }.RSGridLayout new gapSize: 30; on: b nodes.b @ RSCanvasController.b open
+
+-----------------------------
+numberOfNodes := 25. numberOfLines := 90.r := Random seed: 42.graph := Dictionary new.1 to: numberOfNodes do: [ :aNode |	graph at: aNode put: Set new ].numberOfLines timesRepeat: [ 	fromNode := r nextInteger: numberOfNodes.	toNode := r nextInteger: numberOfNodes.	(graph at: fromNode) add: toNode ].canvas := RSCanvas new.nodes := RSLabel models: (1 to: numberOfNodes).nodes color: #red.nodes @ RSDraggable @ RSPopup. canvas addAll: nodes.lb := RSLineBuilder line.lb canvas: canvas.lb withBorderAttachPoint.lb makeBidirectional.lb moveBehind.lb objects: (1 to: numberOfNodes).lb connectToAll: [ :aNumber | graph at: aNumber ].RSForceBasedLayout new charge: -300; on: nodes.canvas @ RSCanvasController.canvas open
