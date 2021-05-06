@@ -166,3 +166,45 @@ Metacello new 	baseline: 'OSSubprocess'; 	repository: 'github://pharo-contribu
 
 -----------------------------
 c := RSCanvas new.shapes := RSLabel models: ByteArray withAllSubclasses.c addAll: shapes.shapes @ RSDraggable.lb := RSLineBuilder graphviz.lb shapes: shapes.lb connectFrom: #superclass.RSGraphVizLayout on: shapes.c @ RSCanvasController
+
+-----------------------------
+nodes := (1 to: 5).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSCircleLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size	shapes: shapes;	normalize.RSCircleLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size	shapes: shapes;	normalize.RSEquidistantCircleLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size	shapes: shapes;	normalize.RSGridLayout on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size	shapes: shapes;	normalize.RSGridLayout new lineItemsCount: 9; on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size    shapes: shapes;    normalize.RSFlowLayout on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size    shapes: shapes;    normalize.canvas when: RSExtentChangedEvent do: [ :event |    RSFlowLayout new         maxWidth: event newExtent x;        on: shapes.    canvas zoomToFit.].canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size    shapes: shapes;    normalize.RSRectanglePackLayout on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+numberOfBoxes := 900.r := Random seed: 42.shapes := RSGroup new.numberOfBoxes timesRepeat: [	shapes add: (RSBox new width: (r nextInt: 40); height: (r nextInt: 40)) ].canvas := RSCanvas new.canvas addAll: shapes.RSRectanglePackLayout new on: shapes.canvas @ RSCanvasController.canvas open
+
+-----------------------------
+nodes := (1 to: 20) asArray shuffleBy: (Random seed: 42).canvas := RSCanvas new.shapes := RSCircle models: nodes.shapes size: 30.canvas addAll: shapes.RSNormalizer size    shapes: shapes;    normalize.RSHorizontalLineLayout on: shapes.canvas zoomToFit.canvas open
+
+-----------------------------
+canvas := RSCanvas new.1 to: 10 do: [ :nb |	group := RSGroup new.	group add: (RSLabel text: nb).	nb timesRepeat: [ group add: (RSCircle new) ].	RSHorizontalLineLayout new alignMiddle; on: group.	canvas add: group asShape.].RSVerticalLineLayout on: canvas nodes.canvas zoomToFit.canvas open 
+
+-----------------------------
+canvas := RSCanvas new.1 to: 10 do: [ :nb |	group := RSGroup new.	group add: (RSLabel text: nb).	nb timesRepeat: [ group add: (RSCircle new) ].	RSHorizontalLineLayout new alignMiddle; on: group.	canvas add: group asShape.].RSVerticalLineLayout new alignRight; on: canvas nodes.canvas zoomToFit.canvas open 
+
+-----------------------------
+Metacello new 	baseline: 'OSSubprocess'; 	repository: 'github://pharo-contributions/OSSubprocess:master/repository';	load.
+
+-----------------------------
+c := RSCanvas new.shapes := RSLabel models: ByteArray withAllSubclasses.c addAll: shapes.shapes @ RSDraggable.lb := RSLineBuilder graphviz.lb shapes: shapes.lb connectFrom: #superclass.RSGraphVizLayout on: shapes.c @ RSCanvasController
