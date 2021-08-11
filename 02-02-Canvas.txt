@@ -30,258 +30,6 @@ c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.
 c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
 
 -----------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
-canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController.canvas open
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShape).c add: (g2 canvas asShape).RSHorizontalLineLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-g1 := RSChart new.p1 := RSLinePlot new.p1 y: #(5 10 3 -4 -5 15).g1 addPlot: p1.g1 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g1 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g1 addDecoration: (RSHorizontalTick new).g1 addDecoration: (RSVerticalTick new).g1 build.g2 := RSChart new.p2 := RSLinePlot new.p2 y: #(2 10 50 -20 40 30 25 12 4).g2 addPlot: p2.g2 addDecoration: (RSXLabelDecoration new title: 'Time'; offset: 0 @ 10).g2 addDecoration: (RSYLabelDecoration new title: 'Value'; offset: -20 @ 0).g2 addDecoration: (RSHorizontalTick new).g2 addDecoration: (RSVerticalTick new).g2 build.c := RSCanvas new.c add: (g1 canvas asShapeModel: 1).c add: (g2 canvas asShapeModel: 2).RSHorizontalLineLayout on: c shapes."We make the graphs draggable"c shapes @ RSDraggable.lb := RSLineBuilder arrowedLine.lb withBorderAttachPoint.lb canvas: c.lb useAssociation: 1 -> 2.c @ RSCanvasController.c open
-
------------------------------
-canvas := RSCanvas new.lbl := RSLabel new.canvas add: lbl.canvas when: RSEvent do: [ :evt |	lbl text: evt asString.	canvas signalUpdate.].canvas open
-
------------------------------
-c := RSCanvas new.c add: RSBox new.c open
-
------------------------------
-c := RSCanvas new.c add: (RSBox new color: Color red; size: 200).win := c open.win extent: 800 @ 300.
-
------------------------------
-c := RSCanvas new.c addAll: (RSLabel models: (1 to: 9)).RSGridLayout on: c shapes.c zoomToFit. c open
-
------------------------------
-c := RSCanvas new.lbl := RSLabel text: 'Click on me to close the window'.lbl fontSize: 30.lbl @ RSHighlightable red.c add: lbl.win := c open.win extent: 600 @ 100.lbl when: RSMouseClick do: [ :evt | win delete ]
-
------------------------------
-c := RSCanvas new.fixedLbl := RSLabel new text: 'Fixed label'; fontSize: 20.c add: fixedLbl.fixedLbl setAsFixed.fixedLbl translateTopLeftTo: 10 @ 10.lbl1 := RSLabel new text: 'Movable label'; fontSize: 20.c add: lbl1.lbl2 := RSLabel new text: 'Trying moving the background'; fontSize: 20.c add: lbl2.lbl2 translateBy: 0 @ -30.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.addLabel := RSLabel text: 'Add shapes'.clearLabel := RSLabel text: 'Clear'.changeColorLabel := RSLabel text: 'Change color'.c add: addLabel; add: clearLabel; add: changeColorLabel.addLabel setAsFixed.clearLabel setAsFixed.changeColorLabel setAsFixed.labels := RSGroup withAll: { addLabel . clearLabel . changeColorLabel }.labels @ RSHighlightable red.RSHorizontalLineLayout on: labels.addLabel when: RSMouseClick do: [ :evt |	10 timesRepeat: [ 		shape := RSEllipse new size: 30.		r := Random new.		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).		c add: shape.		c zoomToFit.		c signalUpdate ] ].clearLabel when: RSMouseClick do: [ :evt |	c shapes do: #remove. 	c signalUpdate ].changeColorLabel when: RSMouseClick do: [ :evt |	c shapes do: [ :s | s color: Color random translucent ]. 	c signalUpdate ].c open
-
------------------------------
-points := { { 'Center' . 0 @ 0 } .				{ 'Top' . 0 @ -150 } .				{ 'Top left' . -150 @ -150 } .				{ 'Top right' . 150 @ -150 } .				{ 'Bottom' . 0 @ 150 } .				{ 'Bottom left' . -150 @ 150 } .				{ 'Bottom right' . 150 @ 150 } }.canvas := RSCanvas new.points do: [ :tupple |	point := RSCircle new.	point translateTo: tupple second.	point @ (RSLabeled text: tupple first, tupple second asString).	canvas add: point.].canvas add: (RSLine new dashed; color: Color red; from: 0 @ -200; to: 0  @ 200).canvas add: (RSLine new dashed; color: Color red; from: -200 @ 0; to: 200  @ 0).canvas @ RSCanvasController.canvas open
-
------------------------------
-c := RSCanvas new.redShape := RSCircle new size: 50; color: #red.blueShape := RSCircle new size: 50; color: #blue.blueShape translateBy: -25@0.c add: redShape; add: blueShape.blueShape pushBack.c zoomToFit.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ RSCanvasController.c open
-
------------------------------
-c := RSCanvas new.r := Random new.100 timesRepeat: [ 	size := r nextInt: 50.	shape := RSEllipse new size: size; model: size.	shape translateTo: (r nextInt: 500) @ (r nextInt: 500).	shape color: Color random translucent.	c add: shape].c shapes @ RSPopup. RSFlowLayout on: c shapes.c @ (RSCanvasController new addInteractionClass: MyFocusOnCanvas).c open
-
------------------------------
 canvas := RSCanvas new.5 timesRepeat: [ 	tmpCanvas := RSCanvas new.	someShapes := RSCircle models: (1 to: 50).	tmpCanvas addAll: someShapes.	RSGridLayout on: tmpCanvas shapes.	tmpCanvas shapes color: Color random translucent.	canvas add: tmpCanvas asShape.].RSGridLayout on: canvas shapes.canvas @ RSCanvasController.canvas open
 
 -----------------------------

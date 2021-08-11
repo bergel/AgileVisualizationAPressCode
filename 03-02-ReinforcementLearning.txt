@@ -1,0 +1,15 @@
+
+-----------------------------
+RLGrid new setSize: 5; setMonsters: 5
+
+-----------------------------
+rl := RL new.rl setInitialGrid: RLGrid new.rl run.rl
+
+-----------------------------
+rl := RL new.rl setInitialGrid: (RLGrid new setSize: 5; setMonsters: 2).rl run.rl
+
+-----------------------------
+rl := RL new.rl setInitialGrid: (RLGrid new setSize: 5; setMonsters: 2).rl epsilon: 0.01.rl run.rl
+
+-----------------------------
+rl := RL new.rl setInitialGrid: (RLGrid new setSize: 5; setMonsters: 2).rl epsilon: 0.01.rl numberOfEpisodes: 7.rl run.rl
