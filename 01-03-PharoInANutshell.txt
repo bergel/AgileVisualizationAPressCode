@@ -1,9 +1,18 @@
 
 -----------------------------
-c := RSCanvas new.c add: (RSLabel new fontSize: 30; text: 'Hello World').c openOnce
+c := RSCanvas new.
+c add: (RSLabel new fontSize: 30; text: 'Hello World').
+c openOnce
 
 -----------------------------
-c := RSCanvas new.#(20 40 35 42 10 25) do: [ :v | 	c add: (RSCircle new size: v; model: v).].RSHorizontalLineLayout on: c shapes.c shapes @ RSLabeled.c @ RSCanvasController.c openOnce
+c := RSCanvas new.
+#(20 40 35 42 10 25) do: [ :v | 
+	c add: (RSCircle new size: v; model: v).
+].
+RSHorizontalLineLayout on: c shapes.
+c shapes @ RSLabeled.
+c @ RSCanvasController.
+c openOnce
 
 -----------------------------
 'the quick brown fox jumped over the lazy dog' copyReplaceAll: 'fox' with: 'cat' 
@@ -12,19 +21,143 @@ c := RSCanvas new.#(20 40 35 42 10 25) do: [ :v | 	c add: (RSCircle new size: 
 Object new == Object new
 
 -----------------------------
-tweets := Tweet createFromExample.tweetShapes := RSCircle models: tweets forEach: [ :aCircle :aTweet | aTweet isPositive ifTrue: [ aCircle color: Color green ]. aTweet isNegative ifTrue: [ aCircle color: Color red ] ].tweetShapes translucent.c := RSCanvas new.c addAll: tweetShapes.RSLineBuilder line	shapes: c nodes;	color: Color gray translucent;	withBorderAttachPoint; 	moveBehind;	noBidirectional;	connectToAll: [ :tweet | 			tweets select: [ :t | t isSimilarTo: tweet ] ].		c nodes @ RSPopup @ RSDraggable.RSNormalizer size	shapes: c nodes; from: 5; to: 15; normalize: [ :tweet | tweet content size ].RSConditionalLayout new ifNotConnectedThen: RSGridLayout new; else: RSForceBasedLayout new; on: c nodes.c @ RSCanvasController.
+Object subclass: #Tweet
+	instanceVariableNames: 'content sender date'
+	classVariableNames: ''
+	package: 'TweetsAnalysis'
 
 -----------------------------
-b := [ :x :y | x + y ].b value: 40 value: 2 "return 42"
+Tweet>>date
+	^ date
 
 -----------------------------
-v := OrderedCollection new.v add: 23. v add: 42.v add: 51.shapes := v collect: [ :nb | RSBox new size: nb ].RSVerticalLineLayout new alignCenter; on: shapes.RSCanvas new	addAll: shapes;	yourself
+Tweet>>date: aDate
+	date := aDate
 
 -----------------------------
-d := Dictionary new.d at: #one put: 1.d at: #two put: 2.d at: #three put: 3.
+Tweet>>content
+	^ content
 
 -----------------------------
-v := OrderedCollection new.v add: 23. v add: 42.v add: 51.
+Tweet>>content: aContent
+	content := aContent
 
 -----------------------------
-v := OrderedCollection new.v 	add: 23; 	add: 42;	add: 51.
+Tweet>>sender
+	^ sender
+
+-----------------------------
+Tweet>>sender: aSender
+	sender := aSender
+
+-----------------------------
+Tweet class>>createFromURL: urlAsString
+	"Method to be defined on the CLASS side"
+	| content lines sender date |
+	content := (ZnEasy get: urlAsString) contents readStream.
+	lines := content contents lines collect: [ :l | 
+		| firstCommaIndex secondCommaIndex |
+		firstCommaIndex := l indexOf: $,.
+		secondCommaIndex := l indexOf: $, startingAt: (firstCommaIndex + 1).
+		sender := l copyFrom: 1 to: (firstCommaIndex - 1).
+		date := l copyFrom: (firstCommaIndex + 1) to: (secondCommaIndex - 1).
+		content := l copyFrom: (secondCommaIndex + 1) to: l size.
+		{ sender . date . content }
+	].
+	^ lines collect: [ :line |
+		Tweet new
+			sender: line first;
+			date: line second;
+			content: line third ]
+
+-----------------------------
+Tweet class>>createFromExample
+	"Method to be defined on the CLASS side"
+	^ self createFromURL: 'http://agilevisualization.com/AgileVisualization/tweets.csv'
+
+-----------------------------
+Tweet>>words
+	"Return the list of words contained in a tweet"
+	^ self content substrings
+
+-----------------------------
+Tweet>>isSimilarTo: aTweet
+	^ (self words intersection: aTweet words) size >= 6
+
+-----------------------------
+Tweet>>isPositive
+	^ #('great' 'cool' 'super' 'fantastic' 'good' 'yes' 'okay' 'ok') includesAny: self words 
+
+-----------------------------
+Tweet>>isNegative
+	^ #('bad' 'worse' 'down' 'no') includesAny: self words 
+
+-----------------------------
+Tweet>>printOn: str
+	| whatToPrint |
+	whatToPrint := self content 
+						ifNil: [ 'Empty' ]
+						ifNotNil: [ self content ].
+	str nextPutAll: whatToPrint
+
+-----------------------------
+tweets := Tweet createFromExample.
+tweetShapes := RSCircle models: tweets forEach: [ :aCircle :aTweet | aTweet isPositive ifTrue: [ aCircle color: Color green ].
+ aTweet isNegative ifTrue: [ aCircle color: Color red ] ].
+tweetShapes translucent.
+
+c := RSCanvas new.
+c addAll: tweetShapes.
+RSLineBuilder line
+	shapes: c nodes;
+	color: Color gray translucent;
+	withBorderAttachPoint; 
+	moveBehind;
+	noBidirectional;
+	connectToAll: [ :tweet | 
+			tweets select: [ :t | t isSimilarTo: tweet ] ].
+		
+c nodes @ RSPopup @ RSDraggable.
+
+RSNormalizer size
+	shapes: c nodes; from: 5; to: 15; normalize: [ :tweet | tweet content size ].
+
+RSConditionalLayout new
+ ifNotConnectedThen: RSGridLayout new;
+ else: RSForceBasedLayout new;
+ on: c nodes.
+c @ RSCanvasController.
+
+-----------------------------
+b := [ :x :y | x + y ].
+b value: 40 value: 2 "return 42"
+
+-----------------------------
+v := OrderedCollection new.
+v add: 23. 
+v add: 42.
+v add: 51.
+shapes := v collect: [ :nb | RSBox new size: nb ].
+RSVerticalLineLayout new alignCenter; on: shapes.
+RSCanvas new
+	addAll: shapes;
+	yourself
+
+-----------------------------
+d := Dictionary new.
+d at: #one put: 1.
+d at: #two put: 2.
+d at: #three put: 3.
+
+-----------------------------
+v := OrderedCollection new.
+v add: 23. 
+v add: 42.
+v add: 51.
+
+-----------------------------
+v := OrderedCollection new.
+v 
+	add: 23; 
+	add: 42;
+	add: 51.
