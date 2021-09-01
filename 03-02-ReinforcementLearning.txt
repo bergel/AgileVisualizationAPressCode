@@ -63,12 +63,12 @@ RLGrid>>= anotherObject
 
 -----------------------------
 RLGrid>>content
-	"Return the content of the grid, as an array of array of characters"
+	"Return the grid content, as an array of array of characters"
 	^ content
 
 -----------------------------
 RLGrid>>hash
-	"The hash of a grid is the hash of the content"
+	"The hash of a grid is the hash of its content"
 	^ content hash
 
 -----------------------------
@@ -138,11 +138,13 @@ RLState>>position
 
 -----------------------------
 RLState>>= anotherState
+	"Two states are identical if (i) they have the same class, (ii) the same grid, and (iii) the same position of the knight"
 	anotherState class == self class ifFalse: [ ^ false ].
 	^ grid = anotherState grid and: [ position = anotherState position ]
 
 -----------------------------
 RLState>>hash
+	"The hash of a state is a combination of the hash of the grid with the hash of the position"
 	^ grid hash bitXor: position hash
 
 -----------------------------
@@ -155,11 +157,11 @@ RLState>>printOn: str
 -----------------------------
 RLState>>visualize
 	"Visualize the grid and the knight position"
-	| c heroShape |	
+	| c knightShape |	
 	c := grid visualize.
-	heroShape := RSCircle new size: 15; color: Color blue lighter lighter.
-	c add: heroShape.
-	heroShape translateTo: self position - (0.5 @ 0.5) * 20.
+	knightShape := RSCircle new size: 15; color: Color blue lighter lighter.
+	c add: knightShape.
+	knightShape translateTo: self position - (0.5 @ 0.5) * 20.
 	^ c 
 
 -----------------------------
@@ -171,6 +173,10 @@ RLState>>inspectorVisualization
 	^ SpRoassal3InspectorPresenter new
 		canvas: canvas;
 		yourself
+
+-----------------------------
+RLState new 
+	grid: (RLGrid new setSize: 5; setMonsters: 5)
 
 -----------------------------
 Object subclass: #RL
@@ -199,24 +205,25 @@ RL>>numberOfEpisodes: aNumber
 
 -----------------------------
 RL>>epsilon: aFloat
-	"Set the probability to explore the world. The argument is between 0.0 and 1.0"
+	"Set the probability to explore the world. The argument is between 0.0 and 1.0. A value close to 0.0 favors choosing an action that we know is a good one (thus reducing the exploration of the grid). A value close to 1.0 favors the world exploration instead."
 	epsilon := aFloat
 
 -----------------------------
 RL>>maxEpisodeSteps: anInteger
-	"Indicate how long the exploration can be"
+	"Indicate how long an exploration can be"
 	maxEpisodeSteps := anInteger 
 
 -----------------------------
 RL>>act: aState action: action
 	"Produce a new tuple {stable . reward . isDone}"
 	| reward newGrid p gridItem isDone newState |
-	p := self moveHero: aState action: action.
+	p := self moveKnight: aState action: action.
 	gridItem := aState grid atPosition: p.
 	newGrid := aState grid copy.
 	gridItem = $m ifTrue: [ reward := -100. isDone := true ].
 	gridItem = $e ifTrue: [ reward := 1000. isDone := true ].
-	('me' includes: gridItem) ifFalse: [ reward := -1. isDone := false ].
+	('me' includes: gridItem) 
+		ifFalse: [ reward := -1. isDone := false ].
 	newState := RLState new grid: newGrid; position: p.
 	stateConnections add: aState -> newState.
 	^ { newState . reward . isDone }
@@ -236,11 +243,12 @@ RL>>chooseAction: state
 			(self qState: state) argmax ]
 
 -----------------------------
-RL>>moveHero: state action: action
+RL>>moveKnight: state action: action
 	"Return the new position of a car, as a point. The action is a number from 1 to 4.
 	return a new position"
 	| delta |
-	delta := { 0@ -1 . 0@1 . -1@0 . 1@0 } at: action ifAbsent: [ self error: 'Unknown action' ].
+	delta := { 0@ -1 . 0@1 . -1@0 . 1@0 } 
+				at: action ifAbsent: [ self error: 'Unknown action' ].
 	^ ((state position + delta) min: state grid extent) max: 1 @ 1
 
 -----------------------------
@@ -266,12 +274,13 @@ RL>>play
 
 -----------------------------
 RL>>qState: state 
-	"Return the Q-values associated to a state"
-	qTable at: state ifAbsentPut: [ (1 to: self actions size) collect: [ :nU | 0 ] ].
+	"Return the rewards associated to a state. If the state is not in the qTable, we create it"
+	qTable at: state ifAbsentPut: [ Array new: self actions size withAll: 0 ].
 	^ qTable at: state
 
 -----------------------------
 RL>>qState: state action: action
+	"For a particular state, return the reward of an action. If the state is not in the qTable, we create it"
 	qTable at: state ifAbsentPut: [ (1 to: self actions size) collect: [ :nU | 0 ] ].
 	^ (qTable at: state) at: action
 
@@ -295,6 +304,7 @@ RL>>run
 				isDone := tuple third.
 				totalReward := totalReward + currentReward.
 				
+				"The Bellman equation"
 				(self qState: currentState) at: currentAction put: (
 					(self qState: currentState action: currentAction) + (alpha * (currentReward + (gamma * (self qState: nextState) max) - (self qState: currentState action: currentAction)))).
 				currentState := nextState
@@ -487,5 +497,11 @@ rl := RL new.
 rl setInitialGrid: (RLGrid new setSize: 5; setMonsters: 2).
 rl epsilon: 0.01.
 rl numberOfEpisodes: 7.
+rl run.
+rl
+
+-----------------------------
+rl := RL new.
+rl setInitialGrid: (RLGrid new setSize: 5; setMonsters: 2).
 rl run.
 rl
