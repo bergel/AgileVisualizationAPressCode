@@ -1,5 +1,11 @@
 
 -----------------------------
+[ Metacello new
+    baseline: 'Roassal3';
+    repository: 'github://ObjectProfile/Roassal3';
+    load: 'Full' ] on: MCMergeOrLoadWarning do: [:warning | warning load ]
+
+-----------------------------
 c := RSCanvas new.
 1 to: 100 do: [ :i |
 	c add: (RSLabel new model: i) ].
@@ -13,7 +19,9 @@ c @ RSCanvasController.
 c open
 
 -----------------------------
-url := 'https://raw.githubusercontent.com/ObjectProfile/Roassal3Documentation/master/data/covidDataUntil23-September-2020.txt'.
+url := 'https://raw.githubusercontent.com/ObjectProfile/',
+		'Roassal3Documentation/master/data/',
+		'covidDataUntil23-September-2020.txt'.
 
 rawData := OpalCompiler evaluate: ((ZnEasy get: url) contents).
 countries := rawData collect: #first.
@@ -24,7 +32,7 @@ chart := RSChart new.
 chart extent: 400 @ 400.
 chart colors: color.
 allData do: [ :data | chart addPlot:(RSLinePlot new y: data) ].
-chart xlabel: 'Days ago' offset: 0 @ 20.
+chart xlabel: 'Days since epoch' offset: 0 @ 20.
 chart ylabel: 'Contaminated' offset: -60 @ 0.
 chart title: 'Coronavirus confirmed cases'.
 chart addDecoration: (RSHorizontalTick new fontSize: 10).

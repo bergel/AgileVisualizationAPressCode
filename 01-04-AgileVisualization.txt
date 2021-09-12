@@ -41,7 +41,7 @@ Class>>visualizeCallGraph
 	shapes := RSBox models: self methods forEach: [ :box :cm | 
 		box color: #blue ].
 	RSNormalizer size shapes: shapes; normalize: #numberOfLinesOfCode.
-	shapes @ RSPopup @ RSDraggable.
+	shapes @ (RSPopup text: #selector) @ RSDraggable.
 	c := RSCanvas new.
 	c addAll: shapes.
 	eb := RSLineBuilder arrowedLineWithOffset: 0.2.

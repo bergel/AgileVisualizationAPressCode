@@ -73,7 +73,10 @@ Tweet class>>createFromURL: urlAsString
 -----------------------------
 Tweet class>>createFromExample
 	"Method to be defined on the CLASS side"
-	^ self createFromURL: 'http://agilevisualization.com/AgileVisualization/tweets.csv'
+	| url |
+	url := 'http://agilevisualization.com',
+			'/AgileVisualization/tweets.csv'.
+	^ self createFromURL: url
 
 -----------------------------
 Tweet>>words
@@ -82,7 +85,7 @@ Tweet>>words
 
 -----------------------------
 Tweet>>isSimilarTo: aTweet
-	^ (self words intersection: aTweet words) size >= 6
+	^ (self words intersection: aTweet words) size >= 4
 
 -----------------------------
 Tweet>>isPositive

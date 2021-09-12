@@ -130,7 +130,7 @@ c @ RSCanvasController.
 c open
 
 -----------------------------
-RSAbstractControlCanvas subclass: #MyFocusOnCanvas
+RSAbstractControlCanvasInteraction subclass: #MyFocusOnCanvas
 	instanceVariableNames: ''
 	classVariableNames: ''
 	package: 'MyControllerExtension'
