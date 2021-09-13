@@ -3,7 +3,7 @@
 [ Metacello new
     baseline: 'Roassal3';
     repository: 'github://ObjectProfile/Roassal3';
-    load: 'Full' ] on: MCMergeOrLoadWarning do: [:warning | warning load ]
+    load: 'Full' ] on: MCMergeOrLoadWarning do: [ :warning | warning load ]
 
 -----------------------------
 c := RSCanvas new.
@@ -68,3 +68,59 @@ RSLineBuilder sunburstBezier
 	canvas: sb canvas;
 	connectFrom: #superclass.
 sb open
+
+-----------------------------
+nodesModel := $a to: $s.
+edges := #( #( $a $b 30 ) #( $b $s 1 ) #( $b $p 4 ) #( $b $c 30 )
+            #( $d $e 30 ) #( $d $f 20 ) #( $d $j 10 ) #( $e $a 15 )
+            #( $f $m 8 ) #( $g $h 20 ) #( $g $r 3 ) #( $i $a 14 )
+            #( $i $k 4 ) #( $i $d 3 ) #( $j $q 5 ) #( $k $l 10 )
+            #( $k $g 5 ) #( $m $n 7 ) #( $m $o 6 ) #( $n $c 5 )
+            #( $p $b 5 ) #( $q $i 4 ) ).
+
+graph := Dictionary new.
+
+nodesModel do: [ :aNode |
+    graph at: aNode put: Set new ].
+
+edges do: [ :edge |
+    fromNode := edge first.
+    toNode := edge second.
+    (graph at: fromNode) add: toNode ].
+
+canvas := RSCanvas new.
+nodes := RSCircle models: (nodesModel) forEach: [:circle :model | circle size: 20; color: Color veryLightGray. ].
+
+nodes @ RSDraggable; @ RSPopup. 
+canvas addAll: nodes.
+
+highlightable := RSHighlightable new.
+highlightable highlightColor: Color red.
+highlightable withEdges.
+nodes @ highlightable.
+
+lb := RSLineBuilder line.
+lb canvas: canvas.
+lb makeBidirectional.
+lb moveBehind.
+lb objects: nodesModel.
+lb connectToAll: [ :aNumber | graph at: aNumber ].
+canvas lines do: [ :line | | edge length |
+	edge := edges detect: [ :e | 
+		e first = line model key 
+			and: [ e second = line model value ] ].
+	length := edge third sqrt * 2.
+	line width: length.
+	line attachPoint: (RSBorderAttachPoint new
+		endOffset: length).
+	line markerEnd: (RSShapeFactory arrow size: length * 2).
+	line markerEnd offset: length / -5.
+	 ].
+(canvas nodes, canvas lines) @ (RSLabeled new 
+	in: [ :lbl | 
+		lbl location middle.
+		lbl shapeBuilder labelShape color: Color black ]; 
+	yourself).
+RSForceBasedLayout new charge: -500; doNotUseProgressBar; on: nodes.
+canvas @ RSCanvasController.
+canvas open
