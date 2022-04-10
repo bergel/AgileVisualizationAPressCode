@@ -166,6 +166,7 @@ jobs:
           cd ci_data
           mv ../uml.png .
           git add uml.png
+      # As of 2022-April, 41898282 is the ID for the github action bot, so this commit will be listed under that user.
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -178,7 +179,7 @@ jobs:
           branch: ${{ github.ref }}
 
 -----------------------------
-curl -L https://get.pharo.org/64/alpha+vm | bash
+curl -L https://get.pharo.org/64/ | bash
 ./pharo --headless Pharo.image ./scripts/visualizeClassDiagram.st
 
 -----------------------------
