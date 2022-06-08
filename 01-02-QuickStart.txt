@@ -19,6 +19,36 @@ c @ RSCanvasController.
 c open
 
 -----------------------------
+path := '/Users/alexandrebergel/Desktop'.
+extensions := 
+	{ 'pdf' -> Color red. 'mov' -> Color blue } asDictionary.
+allFilesUnderPath := path asFileReference allChildren.
+c := RSCanvas new.
+
+allFilesUnderPath do: [ :aFile |
+	| s color |
+	s := RSEllipse model: aFile.
+	color := extensions at: aFile path extension
+							  ifAbsent: [ Color gray ].
+	s color: color translucent.
+	s @ RSPopup @ RSDraggable.
+	c add: s
+].
+
+RSNormalizer size
+	shapes: c nodes;
+	from: 10; to: 30;
+	normalize: [ :aFile | aFile size sqrt ].
+
+RSLineBuilder line
+	shapes: c nodes;
+	connectFrom: #parent.
+
+RSClusterLayout on: c nodes.
+c @ RSCanvasController.
+c open
+
+-----------------------------
 url := 'https://raw.githubusercontent.com/ObjectProfile/',
 		'Roassal3Documentation/master/data/',
 		'covidDataUntil23-September-2020.txt'.
