@@ -55,13 +55,13 @@ Class>>visualizeCallGraph
 	^ c @ RSCanvasController
 
 -----------------------------
-Class>>>inspectorVisualization
+Class>>inspectorVisualization
 	<inspectorPresentationOrder: 90 title: 'Callgraph'>	
 	^ SpRoassal3InspectorPresenter new
 		canvas: self visualizeCallGraph;
 		yourself
 
 -----------------------------
-Class>>>inspectorVisualizationContext: aContext
+Class>>inspectorVisualizationContext: aContext
 	"Remove the evaluator pane"
 	aContext withoutEvaluator
