@@ -23,7 +23,7 @@ url := 'https://raw.githubusercontent.com/ObjectProfile/',
 		'Roassal3Documentation/master/data/',
 		'covidDataUntil23-September-2020.txt'.
 
-rawData := OpalCompiler evaluate: ((ZnEasy get: url) contents).
+rawData := OpalCompiler new evaluate: ((ZnEasy get: url) contents).
 countries := rawData collect: #first.
 allData := rawData collect: #allButFirst.
 color := NSScale category20.
