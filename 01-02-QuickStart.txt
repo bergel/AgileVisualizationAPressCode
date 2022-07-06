@@ -19,7 +19,7 @@ c @ RSCanvasController.
 c open
 
 -----------------------------
-path := '/Users/alexandrebergel/Desktop'.
+path := PlatformResolver forCurrentPlatform home / 'Desktop'.
 extensions := 
 	{ 'pdf' -> Color red. 'mov' -> Color blue } asDictionary.
 allFilesUnderPath := path asFileReference allChildren.
