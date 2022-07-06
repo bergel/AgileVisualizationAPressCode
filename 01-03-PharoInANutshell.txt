@@ -144,7 +144,7 @@ shapes := v collect: [ :nb | RSBox new size: nb ].
 RSVerticalLineLayout new alignCenter; on: shapes.
 RSCanvas new
 	addAll: shapes;
-	yourself
+	open
 
 -----------------------------
 d := Dictionary new.
