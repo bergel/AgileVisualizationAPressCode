@@ -58,9 +58,9 @@ canvas when: RSMouseClick do: [ :evt |
 labelAdd when: RSMouseClick do: [ :evt | 
 	100 timesRepeat: [ 
 		shape := RSBox new
-						size: (r nextInteger: 50);
+						size: (r nextInt: 50);
 						color: Color random translucent;
-						translateTo: (r nextInteger: 500) @ (r nextInteger: 500).
+						translateTo: (r nextInt: 500) @ (r nextInt: 500).
 		canvas add: shape ].
 	"refresh the window"	
 	canvas signalUpdate.
