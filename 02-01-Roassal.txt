@@ -114,7 +114,7 @@ c open
 
 -----------------------------
 values := #(20 10 5 30 24 32).
-links := { 20 -> #(10) . 5 -> #(24 . 20) . 10 -> #(32 30) } asDictionary.
+links := { 20 -> #(10) . 5 -> #(24 20) . 10 -> #(32 30) } asDictionary.
 canvas := RSCanvas new.
 shapes := RSEllipse models: values.
 canvas addAll: shapes.
