@@ -158,16 +158,16 @@ c := RSCanvas new.
 r := Random seed: 42.
 
 100 timesRepeat: [ 
-	p := ((r nextInt: 500) - 250) @ ((r nextInt: 500) - 250).
+	p := ((r nextInteger: 500) - 250) @ ((r nextInteger: 500) - 250).
 	shape := RSCircle new color: Color random translucent.
 	shape translateTo: p.
 	
 	c add: shape.
 
 	c newAnimation
-		easing: RSEasing bounce;
+		easing: RSEasingInterpolator bounce;
 		from: p;
-		duration: ((r nextInt: 5) / 2) second;
+		duration: ((r nextInteger: 5) / 2) second;
 		to: p + (0 @ 100);
 		on: shape set: #position:;
 		when: RSAnimationEndEvent do: [ :evt | shape remove ].
