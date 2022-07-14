@@ -65,7 +65,7 @@ addLabel when: RSMouseClick do: [ :evt |
 	10 timesRepeat: [ 
 		shape := RSEllipse new size: 30.
 		r := Random new.
-		shape translateTo: (r nextInt: 500) @ (r nextInt: 500).
+		shape translateTo: (r nextInteger: 500) @ (r nextInteger: 500).
 		c add: shape.
 		c zoomToFit.
 		c signalUpdate ] ].
